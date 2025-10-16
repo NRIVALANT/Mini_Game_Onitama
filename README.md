@@ -1,340 +1,153 @@
-# 🎮 MiniGames Morpion
+# 🎮 Mini Game Onitama
 
-Un jeu de morpion (Tic-Tac-Toe) en ligne de commande développé en Java avec une **architecture orientée objet avancée**. Ce projet illustre les principes fondamentaux de la POO et les design patterns les plus utilisés en développement professionnel.
-
----
-
-## ✨ Fonctionnalités
-
-### Modes de jeu
-- 👥 **Joueur vs Joueur** : mode local pour deux joueurs
-- 🤖 **Joueur vs IA** : trois niveaux de difficulté
-  - **Facile** : coups aléatoires
-  - **Moyen** : cherche à gagner et bloque l'adversaire
-  - **Difficile** : algorithme Minimax (imbattable !)
-
-### Expérience utilisateur
-- 🎨 **Interface colorisée** : affichage avec codes ANSI pour une meilleure lisibilité
-- 🖥️ **Cross-platform** : détection automatique Unicode/ASCII selon le terminal
-- 📊 **Système de statistiques** : suivi des victoires, défaites et matchs nuls
-- ❌ **Validation robuste** : gestion complète des erreurs de saisie
-- 🔁 **Rejouabilité** : option pour enchaîner les parties
-
-### Architecture technique
-- 🏗️ **Pattern MVC** : séparation claire Model-View-Controller
-- 🎯 **Design Patterns** : Strategy, Singleton, Factory Method, Utility Class
-- 🧩 **Principes SOLID** : code maintenable et extensible
-- 🌐 **WebSocket ready** : infrastructure préparée pour le mode en ligne
+Projet de jeu de stratégie développé en Java avec une architecture orientée objet. Migration en cours de Tic-Tac-Toe vers Onitama.
 
 ---
 
-## 🧠 Concepts POO démontrés
+## 🎯 À propos
 
-### Principes fondamentaux
-| Principe | Implémentation |
-|----------|----------------|
-| **Encapsulation** | Attributs privés avec getters/setters validés |
-| **Héritage** | `AbstractJoueur` → `JoueurHumain`, `JoueurIA` |
-| **Polymorphisme** | Interface `IJoueur` avec implémentations multiples |
-| **Abstraction** | Interfaces `IPlateau`, `StrategieIA` |
-| **Composition** | `JoueurIA` "a une" `StrategieIA` |
+Onitama est un jeu de stratégie abstrait pour 2 joueurs inspiré des arts martiaux. Chaque joueur contrôle 5 pions (1 Maître et 4 Élèves) et utilise des cartes de mouvement pour se déplacer sur un plateau 5x5.
 
-### Design Patterns utilisés
-
-#### 🎯 Strategy Pattern
-**Contexte** : `JoueurIA.java`
-**Stratégies** : `StrategieFacile`, `StrategieMoyenne`, `StrategieDifficile`
-**Bénéfice** : Changement d'algorithme à la volée sans modifier le code
-
-```java
-JoueurIA ia = new JoueurIA("Ordinateur", 'O', "difficile");
-// Changement dynamique de stratégie
-ia.setStrategie(new StrategieFacile());
-```
-
-#### 🔒 Singleton Pattern
-**Implémentation** : `GestionnaireStatistiques.java`
-**Technique** : Double-checked locking (thread-safe)
-**Usage** : Instance unique centralisée des statistiques
-
-```java
-GestionnaireStatistiques gestionnaire = GestionnaireStatistiques.getInstance();
-```
-
-#### 🏭 Factory Method Pattern
-**Localisation** : `JoueurIA.creerStrategie()`
-**Rôle** : Création de la stratégie appropriée selon la difficulté
-
-#### 🛠️ Utility Class Pattern
-**Implémentation** : `Couleur.java`
-**Caractéristiques** : Classe `final`, constructeur privé, méthodes statiques
-
-### Principes SOLID appliqués
-
-- **S** - Single Responsibility : Chaque classe a une responsabilité unique
-- **O** - Open/Closed : Ouvert à l'extension (nouvelles stratégies), fermé à la modification
-- **L** - Liskov Substitution : Toutes les implémentations de `IJoueur` sont interchangeables
-- **I** - Interface Segregation : Interfaces petites et spécialisées
-- **D** - Dependency Inversion : Dépendance aux abstractions, pas aux implémentations
+### Règles du jeu
+- **Objectif** : Capturer le Maître adverse OU amener son Maître sur le temple adverse
+- **Cartes** : 5 cartes par partie (2 par joueur + 1 neutre), tirées parmi 16 cartes officielles
+- **Tour** : Choisir un pion, une carte, puis se déplacer selon la carte
+- **Échange** : Après chaque coup, la carte utilisée devient la carte neutre
 
 ---
 
 ## ⚙️ Prérequis
 
-- **Java Development Kit (JDK) 21** ou supérieur
-- **Apache Maven 3.6** ou supérieur
-- Terminal supportant les codes ANSI (CMD/PowerShell/Unix)
-
-### Vérifier les versions installées
+- **Java 21** ou supérieur
+- **Maven 3.6** ou supérieur
 
 ```bash
-java -version    # Doit afficher 21 ou supérieur
-mvn -version     # Doit afficher 3.6 ou supérieur
+java -version
+mvn -version
 ```
 
 ---
 
-## 🚀 Installation
-
-### Cloner le dépôt
+## 🚀 Installation & Utilisation
 
 ```bash
-git clone https://github.com/NRIVALANT/MiniGamesMorpion.git
-cd MiniGamesMorpion
-```
-
-### Compiler le projet
-
-```bash
+# Compiler
 mvn clean compile
-```
 
-### Créer le JAR exécutable
-
-```bash
+# Créer le JAR
 mvn clean package
-```
 
-Le JAR sera généré dans `target/MiniGamesMorpion-1.0-SNAPSHOT.jar`
-
----
-
-## ▶️ Utilisation
-
-### Lancement rapide
-
-```bash
-# Option 1 : Via JAR (recommandé)
+# Lancer le jeu
 java -jar target/MiniGamesMorpion-1.0-SNAPSHOT.jar
-
-# Option 2 : Via Maven
+# ou
 mvn exec:java
 ```
 
-### Déroulement d'une partie
+---
 
-1. **Sélection du mode** : Joueur vs Joueur ou Joueur vs IA
-2. **Configuration** : Noms des joueurs et symboles (X/O)
-3. **Choix de difficulté** (si IA) : facile, moyen ou difficile
-4. **Partie** : Jouez en entrant les coordonnées (ligne, colonne)
-5. **Résultat** : Affichage des statistiques et option pour rejouer
+## 🏗️ Architecture
 
-### Exemple de saisie
+**Pattern MVC** avec principes SOLID :
+- **Model** : Logique métier (Plateau, Pion, CarteMouvement, IA)
+- **View** : Affichage console avec couleurs ANSI
+- **Controller** : Orchestration du jeu
 
-```
-Entrez la ligne (0-2) : 1
-Entrez la colonne (0-2) : 1
-```
+**Design Patterns** :
+- Strategy (IA avec différents niveaux)
+- Singleton (Gestionnaire de statistiques)
+- Factory (Création des cartes officielles)
+- Value Object (Position, Mouvement)
 
 ---
 
-## 📁 Structure du projet
+## 📋 Migration vers Onitama - Prochaines étapes
 
-```text
-MiniGamesMorpion/
-├── src/main/java/
-│   ├── Main.java                                  # Point d'entrée + config UTF-8
-│   ├── controller/
-│   │   └── JeuController.java                     # Orchestration du jeu (MVC Controller)
-│   ├── model/                                     # Logique métier (MVC Model)
-│   │   ├── AbstractJoueur.java                    # Classe abstraite de base
-│   │   ├── EtatJeu.java                           # Enum : états du jeu
-│   │   ├── GestionnaireStatistiques.java          # Singleton thread-safe
-│   │   ├── IJoueur.java                           # Interface joueur
-│   │   ├── IPlateau.java                          # Interface plateau
-│   │   ├── JoueurHumain.java                      # Joueur contrôlé par utilisateur
-│   │   ├── JoueurIA.java                          # Contexte Strategy Pattern
-│   │   ├── Plateau.java                           # État du plateau 3x3
-│   │   ├── Statistiques.java                      # Stats avec encapsulation avancée
-│   │   ├── Symbole.java                           # Enum : X, O, VIDE
-│   │   └── ia/                                    # Package IA (Strategy Pattern)
-│   │       ├── StrategieIA.java                   # Interface Strategy
-│   │       ├── StrategieFacile.java               # Algorithme aléatoire
-│   │       ├── StrategieMoyenne.java              # Algorithme tactique
-│   │       └── StrategieDifficile.java            # Algorithme Minimax
-│   └── view/                                      # Affichage (MVC View)
-│       ├── ConsoleView.java                       # Vue avec couleurs + Unicode
-│       └── Couleur.java                           # Utility class pour ANSI
-├── target/                                        # Build Maven
-├── pom.xml                                        # Configuration Maven
-└── README.md                                      # Documentation
-```
+### ✅ Phase 1 : Classes du modèle (TERMINÉE)
+- [x] `Position.java` - Coordonnées 5x5 avec notation algébrique
+- [x] `CouleurJoueur.java` - Enum ROUGE/BLEU
+- [x] `TypePion.java` - Enum MAITRE/ELEVE
+- [x] `Pion.java` - Pièce de jeu avec type, couleur, position
+- [x] `Mouvement.java` - Déplacement relatif avec inversion pour perspective
+- [x] `CarteMouvement.java` - Carte avec 2-5 mouvements
+- [x] `DeckCartes.java` - Factory des 16 cartes officielles
 
----
+### 🔄 Phase 2 : Adapter le Plateau (EN COURS)
+- [ ] Modifier `Plateau.java` pour plateau 5x5
+- [ ] Ajouter gestion des pions (liste, placement initial)
+- [ ] Implémenter détection des temples
+- [ ] Créer `getMovementsPossibles(pion, carte)`
+- [ ] Adapter conditions de victoire (capture Maître OU temple)
+- [ ] Implémenter logique de capture
 
-## 🎨 Architecture détaillée
+### 📝 Phase 3 : Système de cartes
+- [ ] Créer `GestionnaireCartes.java` pour distribution
+- [ ] Implémenter échange carte jouée ↔ carte neutre
+- [ ] Ajouter validation des coups selon la carte
 
-### Pattern MVC
+### 🎮 Phase 4 : Controller et View
+- [ ] Adapter `JeuController.java` pour gérer les cartes
+- [ ] Modifier tour de jeu : sélectionner pion → carte → destination
+- [ ] Adapter `ConsoleView.java` pour afficher plateau 5x5
+- [ ] Afficher cartes du joueur avec grilles de mouvements
+- [ ] Améliorer affichage des pions (Maître vs Élève)
 
-```
-┌─────────────┐         ┌──────────────┐         ┌─────────────┐
-│    VIEW     │────────▶│  CONTROLLER  │────────▶│    MODEL    │
-│ ConsoleView │         │JeuController │         │Plateau/IA   │
-│  Couleur    │◀────────│              │◀────────│Statistiques │
-└─────────────┘         └──────────────┘         └─────────────┘
-```
+### 🤖 Phase 5 : Intelligence Artificielle
+- [ ] Créer `StrategieOnitamaFacile` (coups aléatoires valides)
+- [ ] Créer `StrategieOnitamaMoyenne` (heuristique tactique)
+- [ ] Créer `StrategieOnitamaDifficile` (Minimax adapté)
+- [ ] Adapter évaluation de position (contrôle centre, menace temple, etc.)
 
-### Hiérarchie des classes
-
-```
-IJoueur (interface)
-    ├── AbstractJoueur (abstract)
-    │   ├── JoueurHumain
-    │   └── JoueurIA ──────┐
-    │                      │
-    │                      ▼
-    └── StrategieIA (interface)
-            ├── StrategieFacile
-            ├── StrategieMoyenne
-            └── StrategieDifficile (Minimax)
-```
+### ✅ Phase 6 : Tests et polish
+- [ ] Tester tous les scénarios de victoire
+- [ ] Valider l'échange de cartes
+- [ ] Vérifier l'inversion des mouvements pour joueur BLEU
+- [ ] Améliorer l'UX (aide, règles, visualisation)
 
 ---
 
-## 🧪 Algorithmes implémentés
+## 📁 Structure actuelle
 
-### Minimax (StrategieDifficile)
-
-Algorithme récursif de théorie des jeux qui explore toutes les possibilités pour trouver le coup optimal. L'IA devient **mathématiquement imbattable**.
-
-**Complexité** : O(3^9) dans le pire cas
-**Optimisation** : Élagage alpha-bêta (à venir)
-
-### Heuristique tactique (StrategieMoyenne)
-
-1. Cherche un coup **gagnant**
-2. Sinon, **bloque** l'adversaire s'il peut gagner
-3. Sinon, joue un coup **aléatoire**
-
----
-
-## 🛠️ Configuration Maven
-
-### Dépendances
-
-```xml
-<dependency>
-    <groupId>org.java-websocket</groupId>
-    <artifactId>Java-WebSocket</artifactId>
-    <version>1.5.7</version>
-</dependency>
+```
+src/main/java/
+├── Main.java                          # Point d'entrée
+├── controller/
+│   └── JeuController.java             # Orchestration
+├── model/                             # Logique métier
+│   ├── Position.java                  # ✅ Nouveau (Onitama)
+│   ├── CouleurJoueur.java             # ✅ Nouveau (Onitama)
+│   ├── TypePion.java                  # ✅ Nouveau (Onitama)
+│   ├── Pion.java                      # ✅ Nouveau (Onitama)
+│   ├── Mouvement.java                 # ✅ Nouveau (Onitama)
+│   ├── CarteMouvement.java            # ✅ Nouveau (Onitama)
+│   ├── DeckCartes.java                # ✅ Nouveau (16 cartes officielles)
+│   ├── Plateau.java                   # 🔄 À adapter pour 5x5
+│   ├── IJoueur.java                   # ♻️ Réutilisable
+│   ├── AbstractJoueur.java            # ♻️ Réutilisable
+│   ├── JoueurHumain.java              # 🔄 À adapter
+│   ├── JoueurIA.java                  # 🔄 À adapter
+│   ├── GestionnaireStatistiques.java  # ♻️ Réutilisable
+│   ├── Statistiques.java              # ♻️ Réutilisable
+│   └── ia/
+│       ├── StrategieIA.java           # ♻️ Réutilisable
+│       ├── StrategieFacile.java       # 🔄 À adapter
+│       ├── StrategieMoyenne.java      # 🔄 À adapter
+│       └── StrategieDifficile.java    # 🔄 À adapter
+└── view/
+    ├── ConsoleView.java               # 🔄 À adapter pour 5x5
+    └── Couleur.java                   # ♻️ Réutilisable
 ```
 
-### Plugins
-
-- **exec-maven-plugin** (3.5.0) : exécution directe
-- **maven-jar-plugin** (3.4.2) : création du JAR
-- **maven-shade-plugin** (3.6.1) : uber-JAR avec dépendances
-
-### Commandes utiles
-
-```bash
-mvn clean              # Nettoie target/
-mvn compile            # Compile les sources
-mvn test               # Lance les tests (à venir)
-mvn package            # Crée le JAR
-mvn exec:java          # Exécute directement
-```
-
----
-
-## 🎯 Théorie des jeux : Le cas du Morpion
-
-Le Tic-Tac-Toe est un jeu **mathématiquement résolu** : avec une stratégie parfaite des deux côtés, le résultat est **toujours un match nul**.
-
-**Preuve** : L'algorithme Minimax explore tous les 255,168 états possibles et démontre qu'aucun joueur ne peut forcer une victoire si l'adversaire joue de manière optimale.
-
-Cela explique pourquoi jouer en mode "Difficile" contre l'IA aboutit systématiquement à un match nul si vous jouez parfaitement.
-
----
-
-## 🌟 Roadmap future
-
-### Phase 1 : Jeux de stratégie plus complexes
-- [ ] Migration vers **Pentago** (plateau rotatif)
-- [ ] Ou **Onitama** (jeu de cartes abstrait)
-- [ ] Ou **Hive** (jeu de tuiles sans plateau)
-
-### Phase 2 : Interface graphique
-- [ ] **Qt (Python/C++)** ou **JavaFX**
-- [ ] Animations et effets visuels
-- [ ] Thèmes clairs/sombres
-
-### Phase 3 : Multijoueur en ligne
-- [ ] **WebSocket** pour communication temps réel
-- [ ] Backend **serverless** (AWS Lambda, Firebase)
-- [ ] Système de matchmaking
-- [ ] Classement ELO
-
-### Phase 4 : Déploiement
-- [ ] Site web vitrine
-- [ ] Distribution sur stores
-- [ ] API REST pour statistiques globales
-
----
-
-## 🤝 Contribuer
-
-Les contributions sont les bienvenues ! Pour contribuer :
-
-1. **Fork** le projet
-2. Créez une **branche** (`git checkout -b feature/AmazingFeature`)
-3. **Committez** vos changements (`git commit -m 'Add AmazingFeature'`)
-4. **Push** vers la branche (`git push origin feature/AmazingFeature`)
-5. Ouvrez une **Pull Request**
-
-### Guidelines
-
-- Respectez les principes SOLID
-- Documentez les nouvelles classes (Javadoc)
-- Ajoutez des tests unitaires (JUnit 5)
-- Suivez le style de code existant
-
----
-
-## 📄 Licence
-
-Ce projet est sous licence **MIT** - voir le fichier [LICENSE](LICENSE) pour plus de détails.
-
-Vous êtes libre de l'utiliser, le modifier et le redistribuer, même à des fins commerciales.
+**Légende** : ✅ Nouveau | 🔄 À adapter | ♻️ Réutilisable
 
 ---
 
 ## 👨‍💻 Auteur
 
 **NRIVALANT**
-
 - GitHub : [@NRIVALANT](https://github.com/NRIVALANT)
-- Projet : [MiniGamesMorpion](https://github.com/NRIVALANT/MiniGamesMorpion)
 
 ---
 
-## 🙏 Remerciements
+## 📄 Licence
 
-- Communauté Java pour les ressources POO
-- Algorithme Minimax inspiré de la théorie des jeux
-- Pattern Strategy d'après le livre "Design Patterns" (Gang of Four)
-
----
-
-**Développé avec ☕ et passion pour la programmation orientée objet**
+Projet sous licence MIT.
